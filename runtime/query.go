@@ -331,6 +331,11 @@ func parseMessage(msgDescriptor protoreflect.MessageDescriptor, value string) (p
 		}
 		msg = &v
 	default:
+		if msgDescriptor.Fields().Len() == 0 {
+			var v structpb.Struct
+			msg = &v
+			break
+		}
 		return protoreflect.Value{}, fmt.Errorf("unsupported message type: %q", string(msgDescriptor.FullName()))
 	}
 
